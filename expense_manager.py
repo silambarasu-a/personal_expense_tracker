@@ -1,7 +1,7 @@
 from uuid import uuid4
 from datetime import datetime
 
-from utils import get_user_input
+from utils import format_expense_date, get_user_input
 from storage import append_data, load_data
        
 
@@ -75,7 +75,72 @@ def view_expenses():
 
 def view_summary():
     # Function to view expense summary
-    print("Viewing expense summary... (Functionality to be implemented)")
+    # Load the expense data
+    data = load_data()
+
+    total_expenses = 0
+
+    categories = {}
+    payment_methods = {}
+
+    current_month_expenses = 0
+    current_month_records = 0
+
+    current_month_max_expense = None
+    current_month_min_expense = None
+
+    if data:
+        for expense in data:
+            
+            #overall calculation
+            total_expenses += expense.get("amount", 0)
+
+            # Categorize expenses
+            category = expense.get("category", "Uncategorized")
+            if category not in categories:
+                categories[category] = 0
+            categories[category] += expense.get("amount", 0)
+
+            # Payment method calculation
+            payment_method = expense.get("payment_method", "Unknown")
+            if payment_method not in payment_methods:
+                payment_methods[payment_method] = 0
+            payment_methods[payment_method] += expense.get("amount", 0)
+
+            #current month calculation
+            if format_expense_date(expense.get("date"), "month") == datetime.now().month:
+                current_month_records += 1
+                current_month_expenses += expense.get("amount", 0)
+                if current_month_max_expense is None or expense.get("amount", 0) > current_month_max_expense.get("amount", 0):
+                    current_month_max_expense = expense
+                if current_month_min_expense is None or expense.get("amount", 0) < current_month_min_expense.get("amount", 0):
+                    current_month_min_expense = expense
+
+    # Display the summary
+    print(f"{'=' * 150}")
+    print("Expense Summary:")
+
+    print(f"Total Expenses: ₹ {total_expenses:,.2f}")
+    print(f"Current Month Expenses: ₹ {current_month_expenses:,.2f} (Records: {current_month_records})")
+
+    if current_month_max_expense:
+        print(f"\nHighest Expense This Month: ₹ {current_month_max_expense.get('amount', 0):,.2f} - {current_month_max_expense.get('title', 'N/A')} on {current_month_max_expense.get('date', 'N/A')}")
+
+    if current_month_min_expense:
+        print(f"Lowest Expense This Month: ₹ {current_month_min_expense.get('amount', 0):,.2f} - {current_month_min_expense.get('title', 'N/A')} on {current_month_min_expense.get('date', 'N/A')}")
+
+    print("\nExpenses by Category:")
+    for category, amount in categories.items():
+        if amount > 0:
+          print(f"{category}: ₹ {amount:,.2f}")
+    
+    print("\nExpenses by Payment Method:")
+    for method, amount in payment_methods.items():
+        if amount > 0:
+          print(f"{method}: ₹ {amount:,.2f}")
+    
+    print(f"{'=' * 150}")
+
 
 def set_budget():
     # Function to set monthly budget

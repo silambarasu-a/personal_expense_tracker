@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from constants import CATEGORIES, PAYMENT_METHODS
 from validators import (
     ValidationError,
@@ -20,6 +22,17 @@ def _prompt(message, validator):
 def _print_options(options):
     for index, option in enumerate(options, start=1):
         print(f"{index}. {option}")
+
+def format_expense_date(date_str, format_type="month"):
+    """Return the month and year in 'Month YYYY' format from a date string."""
+    try:
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+        if format_type == "month":
+            return date_obj.month
+        else:
+            return date_obj
+    except ValueError:
+        raise ValidationError("Invalid date format. Please use YYYY-MM-DD.")
 
 
 def get_user_input(type):
