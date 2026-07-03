@@ -1,0 +1,22 @@
+[
+    {
+        "_id": "48c64eab-e63c-4455-9290-179173435fb3",
+        "title": "test",
+        "amount": 22.0,
+        "category": "Food",
+        "date": "2021-09-21",
+        "payment_method": "UPI",
+        "notes": "testing expense",
+        "created_at": "2026-07-03 08:13:02.659475"
+    },
+    {
+        "_id": "709c7beb-f513-409a-83d5-f21f05887f95",
+        "title": "testing 2",
+        "amount": 55.0,
+        "category": "Bills",
+        "date": "2021-08-22",
+        "payment_method": "Bank Transfer",
+        "notes": "test expense for the second time",
+        "created_at": "2026-07-03 08:14:28.479361"
+    }
+]
