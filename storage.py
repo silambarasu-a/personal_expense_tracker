@@ -12,22 +12,19 @@ def load_data(file_path = "data/expenses.json"):
 
 def save_data(data, file_path = "data/expenses.json"):
     """Save data to a JSON file."""
-    try:
-        with open(file_path, 'w') as file:
-            json.dump(data, file, indent=4)
-    except Exception as e:
-        print(f"An error occurred while saving data: {e}")
+    with open(file_path, 'w') as file:
+        json.dump(data, file, indent=4)
 
 def append_data(new_data):
     """Append new data to a JSON file."""
-    try:
-        # Load existing data
-        data = load_data()
-        
-        data.append(new_data)
-        
-        # Write the updated data back to the file
-        save_data(data)
-    except Exception as e:
-        print(f"An error occurred while appending data: {e}")
+    # Load existing data
+    data = load_data()
+
+    if not new_data.get("_id"):
+        new_data = {"_id": len(data) + 1, **new_data}
+
+    data.append(new_data)
+
+    # Write the updated data back to the file
+    save_data(data)
 

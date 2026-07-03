@@ -1,74 +1,34 @@
-import uuid
+from uuid import uuid4
 from datetime import datetime
 
-from constants import CATEGORIES, PAYMENT_METHODS
-from validators import validate_date_format
-
+from utils import get_user_input
 from storage import append_data
+       
 
 def add_expense():
     # Function to add an expense
     while True:
         # Get expense details from the user
         # Get the title of the expense
-        title = input("Enter the title of the expense: ")
-        if not title.strip():
-            print("Title cannot be empty. Please try again.")
-            continue
+        title = get_user_input("title")
         
         # Get the amount of the expense
-        try:
-            amount = float(input("Enter the amount of the expense: "))
-            if amount <= 0:
-                print("Amount must be greater than zero. Please try again.")
-                continue
-        except ValueError:
-            print("Invalid amount. Please enter a numeric value.")
-            continue
+        amount = get_user_input("amount")
         
         # Get the category of the expense
-        print("Select the category of the expense: ")
-        for index, category in enumerate(CATEGORIES, start=1):
-            print(f"{index}. {category}")
-        categories_length = len(CATEGORIES)
-        try:
-            category_choice = int(input(f"Enter your choice (1-{categories_length}): "))
-            if 1 <= category_choice <= categories_length:
-                category = CATEGORIES[category_choice - 1]
-            else:
-                print("Invalid choice. Please try again.")
-        except ValueError:
-            print("Invalid input. Please enter a numeric value.")
-
+        category = get_user_input("category")
+        
         # Get the date of the expense
-        expense_date = input("Enter the date of the expense (YYYY-MM-DD): ")
-        if not expense_date.strip():
-            print("Date cannot be empty. Please try again.")
-            continue
-        elif not validate_date_format(expense_date):
-            print("Invalid date format. Please use YYYY-MM-DD.")
-            continue
+        expense_date = get_user_input("date")
         
         # Get the payment method of the expense
-        print("Select the payment method of the expense: ")
-        for index, payemnt_method in enumerate(PAYMENT_METHODS, start=1):
-            print(f"{index}. {payemnt_method}")
-        payment_methods_length = len(PAYMENT_METHODS)
-        try:
-            payment_method_choice = int(input(f"Enter your choice (1-{payment_methods_length}): "))
-            if 1 <= payment_method_choice <= payment_methods_length:
-                payment_method = PAYMENT_METHODS[payment_method_choice - 1]
-            else:
-                print("Invalid choice of payment method. Please try again.")
-        except ValueError:
-            print("Invalid input. Please enter a numeric value.")
+        payment_method = get_user_input("payment_method")
 
         # Get the notes about the expense which is optional
-        notes = (input("Enter any notes about the expense (optional): ")).strip()
+        notes = get_user_input("notes")
 
         # Create a dictionary to store the expense details
         expense_data = {
-            "_id": str(uuid.uuid4()),  # Generate a unique ID for the expense
             "title": title,
             "amount": amount,
             "category": category,
