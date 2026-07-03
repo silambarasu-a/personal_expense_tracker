@@ -2,7 +2,7 @@ from uuid import uuid4
 from datetime import datetime
 
 from utils import get_user_input
-from storage import append_data
+from storage import append_data, load_data
        
 
 def add_expense():
@@ -49,7 +49,22 @@ def add_expense():
 
 def view_expenses():
     # Function to view all expenses
-    print("Viewing all expenses... (Functionality to be implemented)")
+    print(f"{'=' * 140}")
+
+    print(
+        f"{'_id':<5}| {'Title':<20}| {'Amount':<10}| {'Category':<15}| {'Date':<12}| {'Payment Method':<15}| {'Notes':<30}"
+    )
+
+    print(f"{'-' * 140}")
+
+    data = load_data()
+
+    for expense in data:
+        print(
+            f"{expense.get('_id', 'N/A'):<5}| {expense.get('title', 'N/A'):<20}| {expense.get('amount', 'N/A'):<10}| {expense.get('category', 'N/A'):<15}| {expense.get('date', 'N/A'):<12}| {expense.get('payment_method', 'N/A'):<15}| {expense.get('notes', 'N/A'):<30}"
+        )
+
+    print(f"{'=' * 140}")
 
 def view_summary():
     # Function to view expense summary
