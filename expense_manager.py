@@ -50,18 +50,22 @@ def add_expense():
 def view_expenses():
     # Function to view all expenses
 
+    # Load the expense data from the JSON file
     data = load_data()
 
     print(f"{'=' * 140}")
 
+    # Check if there are any expenses to display
     if len(data) == 0:
         print("No expenses found.")
     else:
+        # Print the header for the expense table
         print(
             f"{'_id':<5}| {'Title':<20}| {'₹ Amount':<12}| {'Category':<15}| {'Date':<12}| {'Payment Method':<15}| {'Notes':<30}\n"
             f"{'-' * 140}"
         )
 
+        # Print each expense in a formatted manner
         for expense in data:
             print(
                 f"{expense.get('_id'):<5}| {expense.get('title'):<20}| ₹ {expense.get('amount'):<10,.2f}| {expense.get('category'):<15}| {expense.get('date'):<12}| {expense.get('payment_method'):<15}| {expense.get('notes', 'N/A'):<30}"
