@@ -49,20 +49,23 @@ def add_expense():
 
 def view_expenses():
     # Function to view all expenses
-    print(f"{'=' * 140}")
-
-    print(
-        f"{'_id':<5}| {'Title':<20}| {'Amount':<10}| {'Category':<15}| {'Date':<12}| {'Payment Method':<15}| {'Notes':<30}"
-    )
-
-    print(f"{'-' * 140}")
 
     data = load_data()
 
-    for expense in data:
+    print(f"{'=' * 140}")
+
+    if len(data) == 0:
+        print("No expenses found.")
+    else:
         print(
-            f"{expense.get('_id', 'N/A'):<5}| {expense.get('title', 'N/A'):<20}| {expense.get('amount', 'N/A'):<10}| {expense.get('category', 'N/A'):<15}| {expense.get('date', 'N/A'):<12}| {expense.get('payment_method', 'N/A'):<15}| {expense.get('notes', 'N/A'):<30}"
+            f"{'_id':<5}| {'Title':<20}| {'₹ Amount':<12}| {'Category':<15}| {'Date':<12}| {'Payment Method':<15}| {'Notes':<30}\n"
+            f"{'-' * 140}"
         )
+
+        for expense in data:
+            print(
+                f"{expense.get('_id'):<5}| {expense.get('title'):<20}| ₹ {expense.get('amount'):<10,.2f}| {expense.get('category'):<15}| {expense.get('date'):<12}| {expense.get('payment_method'):<15}| {expense.get('notes', 'N/A'):<30}"
+            )
 
     print(f"{'=' * 140}")
 
