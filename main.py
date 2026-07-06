@@ -1,11 +1,12 @@
 from expense_manager import add_expense, view_expenses, view_summary, set_budget
+from constants import SEPARATORS
 
 def show_menu():
-    print("\n" + "=" * 35)
+    print("\n" + SEPARATORS["EQUALS"])
     print("-----------------------Hello! Welcome to the Personal Expense Tracker-----------------------")
     print("This is a simple program that helps you track your personal expenses.")
     print("You can add, view, and delete expenses at any time.")
-    print("=" * 35)
+    print(SEPARATORS["EQUALS"])
     print("1. Add Expense")
     print("2. View All Expenses")
     print("3. View Expense Summary")

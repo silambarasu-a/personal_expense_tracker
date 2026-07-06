@@ -18,3 +18,8 @@ CATEGORIES = [
     "Rent",
     "Others"
 ]
+
+SEPARATORS = {
+    "DASH": "-" * 140,
+    "EQUALS": "=" * 140
+}

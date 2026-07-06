@@ -1,6 +1,7 @@
 from uuid import uuid4
 from datetime import datetime
 
+from constants import SEPARATORS
 from utils import format_expense_date, get_user_input
 from storage import append_data, load_data
        
@@ -53,7 +54,7 @@ def view_expenses():
     # Load the expense data from the JSON file
     data = load_data()
 
-    print(f"{'=' * 140}")
+    print(SEPARATORS["EQUALS"])
 
     # Check if there are any expenses to display
     if len(data) == 0:
@@ -62,7 +63,7 @@ def view_expenses():
         # Print the header for the expense table
         print(
             f"{'_id':<5}| {'Title':<20}| {'₹ Amount':<12}| {'Category':<15}| {'Date':<12}| {'Payment Method':<15}| {'Notes':<30}\n"
-            f"{'-' * 140}"
+            f"{SEPARATORS['DASH']}"
         )
 
         # Print each expense in a formatted manner
@@ -71,7 +72,7 @@ def view_expenses():
                 f"{expense.get('_id'):<5}| {expense.get('title'):<20}| ₹ {expense.get('amount'):<10,.2f}| {expense.get('category'):<15}| {expense.get('date'):<12}| {expense.get('payment_method'):<15}| {expense.get('notes', 'N/A'):<30}"
             )
 
-    print(f"{'=' * 140}")
+    print(SEPARATORS["EQUALS"])
 
 def view_summary():
     # Function to view expense summary
@@ -117,7 +118,7 @@ def view_summary():
                     current_month_min_expense = expense
 
     # Display the summary
-    print(f"{'=' * 150}")
+    print(SEPARATORS["EQUALS"])
     print("Expense Summary:")
 
     print(f"Total Expenses: ₹ {total_expenses:,.2f}")
@@ -139,7 +140,7 @@ def view_summary():
         if amount > 0:
           print(f"{method}: ₹ {amount:,.2f}")
     
-    print(f"{'=' * 150}")
+    print(SEPARATORS["EQUALS"])
 
 
 def set_budget():
