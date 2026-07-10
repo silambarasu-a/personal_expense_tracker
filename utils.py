@@ -45,6 +45,9 @@ def get_user_input(type):
 
         case "amount":
             return _prompt("Enter the amount of the expense: ", validate_amount)
+        
+        case "budget_amount":
+            return _prompt("Enter the monthly budget amount: ", validate_amount)
 
         case "category":
             print("Select the category of the expense: ")
@@ -71,3 +74,27 @@ def get_user_input(type):
         case "notes":
             notes = input("Enter any notes about the expense (optional): ")
             return notes.strip()  # Notes are optional, so no validation needed
+        
+
+def filter_expenses(expenses, category=None, start_date=None, end_date=None):
+    """Filter expenses based on category and date range."""
+    filtered = expenses
+
+    if category:
+        filtered = [expense for expense in filtered if expense["category"] == category]
+
+    if start_date:
+        filtered = [
+            expense
+            for expense in filtered
+            if datetime.strptime(expense["date"], "%Y-%m-%d") >= start_date
+        ]
+
+    if end_date:
+        filtered = [
+            expense
+            for expense in filtered
+            if datetime.strptime(expense["date"], "%Y-%m-%d") <= end_date
+        ]
+
+    return filtered

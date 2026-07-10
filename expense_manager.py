@@ -1,10 +1,25 @@
-from uuid import uuid4
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from constants import SEPARATORS
-from utils import format_expense_date, get_user_input
-from storage import append_data, load_data
+from utils import filter_expenses, format_expense_date, get_user_input
+from storage import append_data, load_data, save_data
        
+
+def get_overiew():
+    # Function to get an overview of expenses
+    expenses = load_data() or []
+    budget = (load_data("data/settings.json") or {}).get("monthly_budget", 0)
+
+    # Calculate the start and end dates for the current month
+    current_month_start_date = datetime(datetime.now().year, datetime.now().month, 1)
+    current_month_end_date = datetime(datetime.now().year, datetime.now().month + 1, 1) - timedelta(days=1)
+
+    current_month_expenses = filter_expenses(expenses, start_date=current_month_start_date, end_date=current_month_end_date)
+
+    available_budget = budget - sum(expense.get("amount", 0) for expense in current_month_expenses)
+
+    return { "available_budget": available_budget, "current_month_expenses": current_month_expenses, "budget": budget }
+
 
 def add_expense():
     # Function to add an expense
@@ -54,6 +69,9 @@ def view_expenses():
     # Load the expense data from the JSON file
     data = load_data()
 
+    if data is None:
+        data = []
+
     print(SEPARATORS["EQUALS"])
 
     # Check if there are any expenses to display
@@ -78,6 +96,9 @@ def view_summary():
     # Function to view expense summary
     # Load the expense data
     data = load_data()
+
+    if data is None:
+        data = []
 
     total_expenses = 0
 
@@ -145,4 +166,22 @@ def view_summary():
 
 def set_budget():
     # Function to set monthly budget
-    print("Setting monthly budget... (Functionality to be implemented)")
+    while True:
+        # Get budget amount from the user
+        budget_amount = get_user_input("budget_amount")
+
+        # Load existing data to check if budget already exists
+        data = load_data("data/settings.json")
+
+        if data is None:
+            data = {}
+        
+        # Update the budget amount in the settings
+        data["monthly_budget"] = budget_amount
+        saved = save_data(data, "data/settings.json")
+
+        if saved:
+            print(f"Monthly budget set to ₹ {budget_amount:,.2f}")
+            break  # Exit the loop after successfully setting the budget
+        else:
+            print("An error occurred while setting the budget. Please try again.")
