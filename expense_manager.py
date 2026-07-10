@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 
 from constants import SEPARATORS
-from utils import filter_expenses, format_expense_date, get_user_input
+from utils import filter_expenses, format_expense_date, get_user_input, table_print_expenses
 from storage import append_data, load_data, save_data
        
 
@@ -79,16 +79,7 @@ def view_expenses():
         print("No expenses found.")
     else:
         # Print the header for the expense table
-        print(
-            f"{'_id':<5}| {'Title':<20}| {'₹ Amount':<12}| {'Category':<15}| {'Date':<12}| {'Payment Method':<15}| {'Notes':<30}\n"
-            f"{SEPARATORS['DASH']}"
-        )
-
-        # Print each expense in a formatted manner
-        for expense in data:
-            print(
-                f"{expense.get('_id'):<5}| {expense.get('title'):<20}| ₹ {expense.get('amount'):<10,.2f}| {expense.get('category'):<15}| {expense.get('date'):<12}| {expense.get('payment_method'):<15}| {expense.get('notes', 'N/A'):<30}"
-            )
+        table_print_expenses(data)
 
     print(SEPARATORS["EQUALS"])
 
@@ -185,3 +176,48 @@ def set_budget():
             break  # Exit the loop after successfully setting the budget
         else:
             print("An error occurred while setting the budget. Please try again.")
+
+
+def edit_expense():
+    '''Function to edit an existing expense'''
+
+    while True:
+
+        print(SEPARATORS["EQUALS"])
+
+
+def search_expenses():
+    '''Function to search expenses based on various criteria'''
+
+    while True:
+
+        print(SEPARATORS["EQUALS"])
+
+        keywords = input("Enter keywords to search for (or type 'exit' to go back): ").strip()
+
+        if keywords.lower() == 'exit':
+            break
+
+        # Perform the search based on keywords
+        expenses = load_data("data/expenses.json") or []
+        results = [
+                expense 
+                for expense in expenses 
+                if any(
+                    keyword.lower() in str(value).lower() 
+                    for keyword in keywords.split() 
+                    for value in expense.values()
+                )
+            ]
+
+        if results:
+            print(f"Search results for '{keywords}':")
+
+            print(SEPARATORS["DASH"])
+
+            table_print_expenses(results)
+
+        else:
+            print(f"No expenses found for '{keywords}'.")
+        
+

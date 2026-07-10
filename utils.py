@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from constants import CATEGORIES, PAYMENT_METHODS
+from constants import CATEGORIES, PAYMENT_METHODS, SEPARATORS
 from validators import (
     ValidationError,
     validate_required_text,
@@ -98,3 +98,17 @@ def filter_expenses(expenses, category=None, start_date=None, end_date=None):
         ]
 
     return filtered
+
+def table_print_expenses(expenses):
+    """Format expenses for table display."""
+   
+    print(
+            f"{'_id':<5}| {'Title':<20}| {'₹ Amount':<12}| {'Category':<15}| {'Date':<12}| {'Payment Method':<15}| {'Notes':<30}\n"
+            f"{SEPARATORS['DASH']}"
+        )
+
+        # Print each expense in a formatted manner
+    for expense in expenses:
+            print(
+                f"{expense.get('_id'):<5}| {expense.get('title'):<20}| ₹ {expense.get('amount'):<10,.2f}| {expense.get('category'):<15}| {expense.get('date'):<12}| {expense.get('payment_method'):<15}| {expense.get('notes', 'N/A'):<30}"
+            )
