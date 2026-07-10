@@ -185,6 +185,59 @@ def edit_expense():
 
         print(SEPARATORS["EQUALS"])
 
+        expenses = []
+
+        id_to_edit = input("Enter the ID of the expense you want to edit (or type 'exit' to go back): ").strip()
+
+        if id_to_edit.lower() == 'exit':
+            break
+
+        # Load the expense data
+        expenses = load_data("data/expenses.json") or expenses
+
+        # Find the expense with the given ID
+        expense_index = next((index for index, expense in enumerate(expenses) if str(expense.get("_id")) == id_to_edit), None)
+
+        if expense_index is None:
+            print(f"No expense found with ID {id_to_edit}. Please try again.")
+            continue
+        else:
+            expense_to_edit = expenses[expense_index]
+
+            print(SEPARATORS["DASH"])
+            table_print_expenses([expense_to_edit])
+            print(SEPARATORS["EQUALS"])
+
+            # Prompt the user for getting key they want to edit and the new value for that key
+            key_to_edit = input("Enter the field you want to edit (title, amount, category, date, payment_method, notes) or type 'exit' to go back: ").strip()
+
+            if key_to_edit.lower() == 'exit':
+                break
+            elif key_to_edit not in expense_to_edit:
+                print(f"Invalid field '{key_to_edit}'. Please try again.")
+                continue
+            else:
+                new_value = get_user_input(key_to_edit)
+
+                # Update the expense with the new value
+                expense_to_edit[key_to_edit] = new_value
+
+                # Save the updated expenses back to the JSON file
+                expenses[expense_index] = expense_to_edit
+                saved = save_data(expenses, "data/expenses.json")
+
+                if saved:
+                    print(f"Expense with ID {id_to_edit} has been updated successfully.")
+
+                    print(SEPARATORS["DASH"])
+                    table_print_expenses([expense_to_edit])
+                    print(SEPARATORS["DASH"])
+
+                    break  # Exit the loop after successfully editing the expense
+                else:
+                    print("An error occurred while updating the expense. Please try again.")
+
+            
 
 def search_expenses():
     '''Function to search expenses based on various criteria'''
