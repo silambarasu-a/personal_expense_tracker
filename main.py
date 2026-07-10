@@ -1,7 +1,19 @@
 from expense_manager import add_expense, get_overiew, view_expenses, view_summary, set_budget
 from constants import SEPARATORS
 
+MENU = [
+    ("Add Expense", add_expense), 
+    ("View All Expenses", view_expenses), 
+    ("View Expense Summary", view_summary), 
+    ("Set Monthly Budget", set_budget), 
+    ("Edit an Expense", None), 
+    ("Search Expenses", None), 
+    ("Exit", 0)
+]
+
 def show_menu():
+
+
     print("\n" + SEPARATORS["EQUALS"])
     print("-----------------------Hello! Welcome to the Personal Expense Tracker-----------------------")
     print("This is a simple program that helps you track your personal expenses.")
@@ -18,31 +30,34 @@ def show_menu():
     
     print(SEPARATORS["EQUALS"])
 
-    print("1. Add Expense")
-    print("2. View All Expenses")
-    print("3. View Expense Summary")
-    print("4. Set Monthly Budget")
-    print("5. Exit")
+    for i, option in enumerate(MENU, start=1):
+        print(f"{i}. {option[0]}")
 
 
 def main():
     while True:
         show_menu()
-        choice = input("Enter your choice (1-5): ")
+        choice = input(f"Enter your choice ({1}-{len(MENU)}): ")
 
-        if choice == "1":
-            add_expense()
-        elif choice == "2":
-            view_expenses()
-        elif choice == "3":
-            view_summary()
-        elif choice == "4":
-            set_budget()
-        elif choice == "5":
-            print("Exiting the program. Goodbye!")
-            break
-        else:
-            print("Invalid choice. Please try again.")
+        try:
+            choice = int(choice)
+            if choice < 1 or choice > len(MENU):
+                print("Invalid choice. Please try again.")
+                continue
+            else:
+                menu_item = MENU[choice - 1][1]
+                if menu_item is None:
+                    print("This feature is not yet implemented. Please choose another option.")
+                    continue
+                else:
+                    if menu_item == 0:
+                        print("Exiting the program. Goodbye!")
+                        break
+                    else:
+                        menu_item()
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+            continue
 
 
 if __name__ == "__main__":
