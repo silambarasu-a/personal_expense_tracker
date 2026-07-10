@@ -274,3 +274,48 @@ def search_expenses():
             print(f"No expenses found for '{keywords}'.")
         
 
+def delete_expense():
+    '''Function to delete an existing expense'''
+
+    while True:
+
+        print(SEPARATORS["EQUALS"])
+
+        expenses = []
+
+        id_to_delete = input("Enter the ID of the expense you want to delete (or type 'exit' to go back): ").strip()
+
+        if id_to_delete.lower() == 'exit':
+            break
+
+        # Load the expense data
+        expenses = load_data("data/expenses.json") or expenses
+
+        # Find the expense with the given ID
+        expense_index = next((index for index, expense in enumerate(expenses) if str(expense.get("_id")) == id_to_delete), None)
+
+        if expense_index is None:
+            print(f"No expense found with ID {id_to_delete}. Please try again.")
+            continue
+        else:
+            expense_to_delete = expenses[expense_index]
+
+            print(SEPARATORS["DASH"])
+            table_print_expenses([expense_to_delete])
+            print(SEPARATORS["EQUALS"])
+
+            confirmation = input(f"Are you sure you want to delete the expense with ID {id_to_delete}? (yes/no): ").strip().lower()
+
+            if confirmation == 'yes':
+                # Remove the expense from the list
+                del expenses[expense_index]
+                saved = save_data(expenses, "data/expenses.json")
+
+                if saved:
+                    print(f"Expense with ID {id_to_delete} has been deleted successfully.")
+                    break  # Exit the loop after successfully deleting the expense
+                else:
+                    print("An error occurred while deleting the expense. Please try again.")
+            else:
+                print("Deletion cancelled. No changes made.")
+                break

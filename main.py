@@ -1,4 +1,4 @@
-from expense_manager import add_expense, edit_expense, get_overiew, search_expenses, view_expenses, view_summary, set_budget
+from expense_manager import add_expense, delete_expense, edit_expense, get_overiew, search_expenses, view_expenses, view_summary, set_budget
 from constants import SEPARATORS
 
 MENU = [
@@ -8,6 +8,7 @@ MENU = [
     ("Set Monthly Budget", set_budget), 
     ("Edit an Expense", edit_expense), 
     ("Search Expenses", search_expenses), 
+    ("Delete an Expense", delete_expense),
     ("Exit", 0)
 ]
 

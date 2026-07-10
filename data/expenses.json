@@ -1,15 +1,5 @@
 [
     {
-        "title": "Car Fuel",
-        "amount": 2000.0,
-        "category": "Travel",
-        "date": "2026-07-03",
-        "payment_method": "Credit Card",
-        "notes": "Petrol for car at IOC",
-        "created_at": "2026-07-03 21:32:29.687437",
-        "_id": 1
-    },
-    {
         "_id": 2,
         "title": "Test edit",
         "amount": 440.0,
